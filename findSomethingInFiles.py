@@ -1,5 +1,6 @@
 import os
 
+
 def readFile(fileName):
     with open(fileName) as f:
         line = f.readline()
@@ -7,8 +8,7 @@ def readFile(fileName):
             try:
                 line = f.readline()
 
-                if "pid 21479" in line:
-
+                if find_what in line:
                     print(fileName)
                     print(line)
 
@@ -16,15 +16,18 @@ def readFile(fileName):
                 continue
 
 
-
 def filterTheCurrentFolder(folerName):
     for maindir, subdir, file_name_list in os.walk(folerName):
 
         for filename in file_name_list:
-            apath = os.path.join(maindir, filename)
-            if '.txt' in apath:
+            if 'txt' in filename:
+                apath = os.path.join(maindir, filename)
                 readFile(apath)
+
+        break
 
 
 if __name__ == '__main__':
-    filterTheCurrentFolder("D:\\BugAnalysis\\DEN-49309\\out\\logcat")
+    find_what = "process id"    # process id:
+    file_path = "D:\BugAnalysis\DEN-48730\logcat"
+    filterTheCurrentFolder(file_path)
