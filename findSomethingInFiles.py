@@ -12,7 +12,7 @@ def readFile(fileName):
                     print(fileName)
                     print(line)
 
-            except UnicodeDecodeError as e:
+            except UnicodeDecodeError:
                 continue
 
 
@@ -20,7 +20,7 @@ def filterTheCurrentFolder(folerName):
     for maindir, subdir, file_name_list in os.walk(folerName):
 
         for filename in file_name_list:
-            if 'txt' in filename:
+            # if 'txt' in filename:
                 apath = os.path.join(maindir, filename)
                 readFile(apath)
 
@@ -28,6 +28,6 @@ def filterTheCurrentFolder(folerName):
 
 
 if __name__ == '__main__':
-    find_what = "process id"    # process id:
-    file_path = "D:\BugAnalysis\DEN-48730\logcat"
+    find_what = "3965"    # process id:
+    file_path = "D:\BugAnalysis\DEN-49447\logcat"
     filterTheCurrentFolder(file_path)
