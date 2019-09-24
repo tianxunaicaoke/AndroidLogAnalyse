@@ -8,7 +8,7 @@ import shutil
 def un_gz(file_name):
     try:
         """ungz zip file"""
-        f_name = file_name.replace(".gz", "")
+        f_name = file_name.replace(".gz", ".txt")
         g_file = gzip.GzipFile(file_name)
         open(f_name, "wb+").write(g_file.read())
         g_file.close()

@@ -9,6 +9,9 @@ class BaseReader:
         f.close()
         pass
 
+    def getSubfileName(self):
+         pass
+
 
 class BaseTemplate:
     def __init__(self, file_name):
@@ -41,7 +44,7 @@ class BaseDistributor:
         keyword, file_name_list = self.template.get_keyword_file()
         writer_file = []
         for f in file_name_list:
-            wf = open("temp/"+f, 'w')
+            wf = open("temp/"+f, 'a')
             writer_file.append(wf)
         line = file_name.readline()
         while line:

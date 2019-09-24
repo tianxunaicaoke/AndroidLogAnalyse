@@ -27,9 +27,9 @@ def filter_the_current_folder(folder_name):
     for maindir, subdir, file_name_list in os.walk(folder_name):
         for filename in file_name_list:
             path = os.path.join(maindir, filename)
-            if '.log' in path and BaseUtil.get_doc_size(path) > 10:
+            if '.txt' in path and BaseUtil.get_doc_size(path) > 10:
                 read_file_and_separate(path)
 
 
 if __name__ == '__main__':
-    filter_the_current_folder("D:\\Users\\xtian\\PycharmProjects\\LogUtil")
+    filter_the_current_folder("F:\\New folder (2)")

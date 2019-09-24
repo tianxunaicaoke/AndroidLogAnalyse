@@ -1,1 +1,4 @@
-am_proc_died|died.txt
+sent out EVENT_NAVIGATION_NEW_ROUTE|new route.txt
+NavigationStatus.NavigationStateNotification is|navigation.txt
+NavigationView|navigationView.txt
+HomeScreen:HomeScreenActivity: on|HomeScreen.txt
