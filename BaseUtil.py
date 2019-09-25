@@ -35,3 +35,22 @@ def writer(file_name, information):
             f.writelines(info + "\n")
         f.close()
         pass
+
+
+def remove_duplicate_line_by_iteam(file_name, item_index):
+    f = open(file_name+".txt")
+    f1 = open(file_name+"new.txt", "w")
+    exist_item = []
+    for info in f.readlines():
+        if info.split()[item_index] not in exist_item:
+           exist_item.append(info.split()[item_index])
+           f1.writelines(info)
+    f.close()
+    f1.close()
+    pass
+
+
+def remove_temp_file(path_list):
+    for p in path_list:
+        os.remove(p)
+    pass

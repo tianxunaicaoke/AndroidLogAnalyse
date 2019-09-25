@@ -44,7 +44,7 @@ class BaseDistributor:
         keyword, file_name_list = self.template.get_keyword_file()
         writer_file = []
         for f in file_name_list:
-            wf = open("temp/"+f, 'a')
+            wf = open("temp/"+f, 'w')
             writer_file.append(wf)
         line = file_name.readline()
         while line:
@@ -61,7 +61,7 @@ class BaseWriter:
         self.file_name = file_name
         pass
 
-    def writer(self, title, information):
+    def writer(self, information, title=""):
         f = open(self.file_name, "w")
         f.writelines(title + "\n")
         for info in information:
