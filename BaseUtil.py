@@ -52,5 +52,14 @@ def remove_duplicate_line_by_iteam(file_name, item_index):
 
 def remove_temp_file(path_list):
     for p in path_list:
-        os.remove(p)
+        if os.path.exists(p):
+           os.remove(p)
     pass
+
+
+def get_col_by_index(path_list, index):
+    f = open(path_list)
+    back = []
+    for line in f.readlines():
+        back.append(line.split()[index])
+    return back

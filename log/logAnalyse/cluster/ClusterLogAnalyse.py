@@ -1,10 +1,11 @@
-from BaseUtil import remove_duplicate_line_by_iteam, remove_temp_file
+from BaseUtil import remove_duplicate_line_by_iteam, remove_temp_file, get_col_by_index
 from Decorators import open_process_write_file
 from log.logAnalyse.base.BaseFrame import BaseWriter, BaseProcessor, BaseTemplate, BaseDistributor, BaseReader, \
     BaseFrame
 
 from log.logAnalyse.cluster.ClusterKeyConvertToName import get_template_name_by_id
 from log.logAnalyse.cluster.GetClusterLayoutFolder import readfile
+from log.logAnalyse.cluster.GetLayoutId import get_layout_id
 
 
 class ClusterProcessor(BaseProcessor):
@@ -23,6 +24,7 @@ class ClusterProcessor(BaseProcessor):
         writer.writer(
             title="--------------------------------------------------------------------------------------------------------------")
         self.get_alert_information(writer.file_name)
+        writer.writer(self.get_layout_info())
         pass
 
     def get_base_information(self, file_name):
@@ -56,13 +58,20 @@ class ClusterProcessor(BaseProcessor):
 
     @open_process_write_file("temp/alert.txt")
     def get_alert_information(line):
-        information = "|--time :" + line.split()[0] + " " + line.split()[1] + "--|alert name:" + get_template_name_by_id(line.split()[-1]) + "\n"
+        information = "|--time :" + line.split()[0] + " " + line.split()[1] + "--|alert name:" + get_template_name_by_id((line.split()[-3])[:-1]) + "\n"
         return True, information
 
     @open_process_write_file("temp/threadnew.txt")
     def get_thread_information(line):
         thread = line.split()[2]
         return True, "--Thread ID is :" + thread + " |Start time  " + line.split()[1] + "|\n"
+
+    def get_layout_info(self):
+        back = []
+        for id in get_col_by_index("temp/alert.txt", -3):
+            back.append(get_layout_id(get_template_name_by_id(id[:-1]), ["clusterLayout/ClusterLayoutFocus.txt", "clusterLayout/ClusterLayoutUnFocus.txt",
+                             "clusterLayout/HudLayout.txt"]))
+        return back
 
 
 class ClusterWriter(BaseWriter):
@@ -81,7 +90,7 @@ if __name__ == '__main__':
     outString = '../../Output/'
     remove_temp_file([outString+"response.txt"])
     readfile("E:/HMI-Common/hmi-common/NavHome/Platform/GMPlatform/src/main/res/xml")
-    reader = BaseReader(logString + "main.log")
+    reader = BaseReader(logString + "main2.log")
     template = BaseTemplate("template.txt")
     distributor = BaseDistributor(template)
     writer = ClusterWriter(outString + "response.txt")

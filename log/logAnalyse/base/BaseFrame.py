@@ -4,7 +4,7 @@ class BaseReader:
         pass
 
     def readfile(self, cl_distributor):
-        f = open(self.file_name)
+        f = open(self.file_name, encoding="ANSI")
         cl_distributor.distributor(f)
         f.close()
         pass
