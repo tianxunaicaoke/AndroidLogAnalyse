@@ -4,7 +4,7 @@ import BaseUtil
 from Decorators import apply_for_folder
 
 
-def read_file_and_separate(file_name):
+def separate_file(file_name):
     if BaseUtil.is_log_file(file_name) and BaseUtil.get_doc_size(file_name) > 10:
         f = open(file_name)
         line = f.readline()
@@ -26,15 +26,15 @@ def read_file_and_separate(file_name):
 
 
 @apply_for_folder
-def read_folder_and_separate(folder_name):
-    read_file_and_separate(folder_name)
+def separate_file_under_folder(folder_name):
+    separate_file(folder_name)
 
 
 def _main(argv):
     if argv[1] == '-f':
-        read_folder_and_separate(argv[2])
+        separate_file_under_folder(argv[2])
     else:
-        read_file_and_separate(argv[1])
+        separate_file(argv[1])
     pass
 
 

@@ -1,0 +1,53 @@
+import sys
+
+from Decorators import go_every_line_of_file
+import re
+
+
+time_line_dict = {}
+
+
+@go_every_line_of_file
+def process(*input_data):
+    """input_data will be changed by decorator go_every_line_of_file"""
+    args = input_data[0]
+    position = args[1]
+    time = input_data[1][position[0]:position[1]]
+    time_line_dict[time] = input_data[2]
+
+
+def separate_log_by_time(input_data):
+    """
+    Go through the file and get the line separate the time
+    input_data: the file name
+    return: the time with separate line number
+    """
+    time_line_dict.clear()
+    position = get_time_log_position(input_data)
+    process(input_data, position)
+    return time_line_dict
+
+
+def get_time_log_position(file_name):
+    """
+    Get the time location in log file. 
+    Example: 12-31 19:14:09.151 XX(PID) XX(TID) X(log Level) XXX(tag):  XXXXX(info)
+    get_time_log_position("example.log") will return (6,14)
+    """
+    f = open(file_name)
+    s_str = None
+    while s_str is None:
+        s_str = re.search(r'\d{2}:\d{2}:\d{2}', f.readline())
+    if s_str is not None:
+        f.close()
+        return s_str.span()
+    f.close()
+
+
+def _main(argv):
+    print separate_log_by_time(argv[1])
+
+
+if __name__ == '__main__':
+    _main(sys.argv)
+
