@@ -78,13 +78,13 @@ def filter_current_folder(folder_name):
 
 def move_file(path):
     for maindir, subdir, file_name_list in os.walk(path):
-        path = path + "/main.log.out"
+        path = path + "/main.Log.out"
         if not os.path.isdir(path):
             os.mkdir(path)
 
         for filename in file_name_list:
             apath = os.path.join(maindir, filename)
-            if 'main.log' in apath and '.gz' not in apath:
+            if 'main.Log' in apath and '.gz' not in apath:
                 print(apath)
                 shutil.move(apath, path)
         break
@@ -95,5 +95,5 @@ def unzip_and_move(in_path, out_path):
     move_file(out_path)
 
 if __name__ == '__main__':
-    unzip_and_move("./log/log", "./log/log")
+    unzip_and_move("./Log/Log", "./Log/Log")
 

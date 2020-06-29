@@ -1,9 +1,5 @@
 import os
-
-
-def get_string_by_index(line, index):
-    value = line.split()
-    return value[index]
+import re
 
 
 def is_file(file_name):
@@ -66,11 +62,29 @@ def get_col_by_index(path_list, index):
     back = []
     for line in f.readlines():
         back.append(line.split()[index])
+    f.close()
     return back
 
 
 def is_log_file(file_name):
-    if '.txt' in file_name or '.log' in file_name:
+    if '.txt' in file_name or '.Log' in file_name:
         return True
     else:
         return False
+
+
+def get_target_log_position(file_name, re_str):
+    """
+    Get the target location in Log file. 
+    Example: 12-31 19:14:09.151 XX(PID) XX(TID) X(Log Level) XXX(tag):  XXXXX(info)
+    get_target_log_position("example.Log",r'\d{2}:\d{2}:\d{2}') will return (6,14)
+    """
+    f = open(file_name)
+    s_str = None
+    while s_str is None:
+        s_str = re.search(re_str, f.readline())
+    if s_str is not None:
+        f.close()
+        return s_str.span()
+    f.close()
+

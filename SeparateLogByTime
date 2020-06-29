@@ -1,7 +1,7 @@
 import sys
 
+from BaseUtil import get_target_log_position
 from Decorators import go_every_line_of_file
-import re
 
 
 time_line_dict = {}
@@ -23,25 +23,9 @@ def separate_log_by_time(input_data):
     return: the time with separate line number
     """
     time_line_dict.clear()
-    position = get_time_log_position(input_data)
+    position = get_target_log_position(input_data, r'\d{2}:\d{2}:\d{2}')
     process(input_data, position)
     return time_line_dict
-
-
-def get_time_log_position(file_name):
-    """
-    Get the time location in log file. 
-    Example: 12-31 19:14:09.151 XX(PID) XX(TID) X(log Level) XXX(tag):  XXXXX(info)
-    get_time_log_position("example.log") will return (6,14)
-    """
-    f = open(file_name)
-    s_str = None
-    while s_str is None:
-        s_str = re.search(r'\d{2}:\d{2}:\d{2}', f.readline())
-    if s_str is not None:
-        f.close()
-        return s_str.span()
-    f.close()
 
 
 def _main(argv):
