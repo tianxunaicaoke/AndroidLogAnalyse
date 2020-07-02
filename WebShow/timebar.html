@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .scroll {
+            margin: 100px;
+            width: 500px;
+            height: 5px;
+            background: #ccc;
+            position: relative;
+        }
+
+        .bar {
+            width: 10px;
+            height: 20px;
+            background: #369;
+            position: absolute;
+            top: -7px;
+            left: 0;
+            cursor: pointer;
+        }
+
+        .bar1 {
+            width: 10px;
+            height: 20px;
+            background: #369;
+            position: absolute;
+            top: -7px;
+            right: 0;
+            cursor: pointer;
+        }
+
+        .mask {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #369;
+            width: 500px;
+            height: 5px;
+        }
+
+        .show-msg {
+            opacity: 0;
+            transition: all 1s;
+        }
+
+        .msg {
+            position: absolute;
+            font-size: 16px;
+            color: #fff;
+            top: -60px;
+            background-color: rgba(0, 0, 0, .6);
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scroll" id="scroll">
+        <div class="show-msg" id="show-msg">
+            <p class="msg" id="msg"></p>
+        </div>
+        <div class="bar" id="bar">
+        </div>
+        <div class="bar1" id="bar1">
+        </div>
+        <div class="mask" id="mask"></div>
+    </div>
+    <script>
+        var scroll = document.getElementById('scroll');
+        var bar = document.getElementById('bar');
+        var bar1 = document.getElementById('bar1');
+        var mask = document.getElementById('mask');
+        var message = document.getElementById('msg');
+        var showMessage = document.getElementById('show-msg');
+        var barleft = 0;
+        function show(msg, location) {
+            message.innerHTML = msg;
+            showMessage.style.display = 'flex';
+            showMessage.style.opacity = '1';
+            message.style.left = location + 'px';
+        }
+        bar1.onmousedown = function (event) {
+            var event = event || window.event;
+            var leftVal = event.clientX - this.offsetLeft;
+            var that = this;
+            var start = bar.offsetLeft;
+            document.onmousemove = function (event) {
+                var event = event || window.event;
+                barleft = event.clientX - leftVal;
+                if (barleft < start + 12)
+                    barleft = start + 12;
+                else if (barleft > scroll.offsetWidth - bar.offsetWidth)
+                    barleft = scroll.offsetWidth - bar.offsetWidth;
+                that.style.left = barleft + 'px';
+                mask.style.left = start + 'px';
+                mask.style.width = (barleft - start) + 'px';
+                show(barleft, barleft);
+                window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+            }
+        }
+        bar.onmousedown = function (event) {
+            var event = event || window.event;
+            var leftVal = event.clientX - this.offsetLeft;
+            var that = this;
+            document.onmousemove = function (event) {
+                var event = event || window.event;
+                barleft = event.clientX - leftVal;
+                end = bar1.offsetLeft;
+                if (barleft < 0)
+                    barleft = 0;
+                else if (barleft > end - 12)
+                    barleft = end - 12;
+                mask.style.left = barleft + 'px';
+                mask.style.width = (end - barleft) + 'px';
+                that.style.left = barleft + 'px';
+                show(barleft, barleft);
+                window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+            }
+        }
+        document.onmouseup = function () {
+            document.onmousemove = null;
+            showMessage.style.opacity = '0';
+        }
+    </script>
+</body>
+
+</html>
